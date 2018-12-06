@@ -10,7 +10,8 @@ use File::Path;
 use File::Spec;
 use Text::Nimble;
 
-my $version = "0.1";
+my $version         = "0.2";
+my $nimble_file_ext = "nb";
 
 sub print_help {
     print "pssg\n";
@@ -77,7 +78,7 @@ sub build_nav_link {
     print "[NAV ] File $file\n";
     my $title = build_title($file);
     $file =~ s/$root//;
-    $file =~ s/\.nb$/.html/;
+    $file =~ s/\.$nimble_file_ext$/.html/;
     return "<li><a href=\"$file\">$title</a></li>\n";
 }
 
@@ -100,7 +101,7 @@ sub build_nav_dir {
             $title = <$fh>;
         }
         if (-f $file) {
-            next unless $file =~ /\.nb$/;
+            next unless $file =~ /\.$nimble_file_ext$/;
             $nav .= build_nav_link($file, $root);
         }
         if (-d $file) {
@@ -193,7 +194,7 @@ if ($options{c}) {
 }
 
 my @infiles = File::Find::Rule->file()
-                              ->name('*.nb')
+                              ->name('*.$nimble_file_ext')
                               ->in($indir);
 
 # Build nav
@@ -202,7 +203,7 @@ my $nav = build_nav($indir);
 # Build pages
 foreach my $in (@infiles) {
     my $out = $in =~ s/$indir/$outdir/r;
-    $out =~ s/\.nb$/\.html/;
+    $out =~ s/\.$nimble_file_ext$/\.html/;
     my ($drive, $dir, $file) = File::Spec->splitpath($out);
 
     File::Path->make_path($dir);
