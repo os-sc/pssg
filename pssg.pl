@@ -10,15 +10,19 @@ use File::Path;
 use File::Spec;
 use Text::Nimble;
 
+my $version = "0.1";
+
 sub print_help {
-    print "pssg options\n";
-    print "============\n";
-    print "-c\tclean output directory\n";
-    print "-h\thelp\n";
-    print "-f\tinput directory\n";
-    print "-m\tmacro file\n";
-    print "-o\toutput directory\n";
-    print "-s\tstyle sheet file\n";
+    print "pssg\n";
+    print "====\n";
+    print "version: $version\n";
+    print "options:\n\n";
+    print "\t-c\tclean output directory\n";
+    print "\t-h\thelp\n";
+    print "\t-f\tinput directory\n";
+    print "\t-m\tmacro file\n";
+    print "\t-o\toutput directory\n";
+    print "\t-s\tstyle sheet file\n";
 }
 
 sub render_html {
@@ -135,8 +139,9 @@ sub build_title {
     return $path;
 }
 
-# Parse command line arguments
+print "[INFO] Starting pssg version $version\n";
 
+# Parse command line arguments
 my $reqargs = "f:o:";
 my $optargs = "chm:s:";
 my %options = ();
@@ -204,5 +209,5 @@ foreach my $in (@infiles) {
     render_html($in, $out, $nav, $styles, $macros);
 }
 
-print "[INFO] Finished rendering...\n";
+print "[INFO] Finished rendering\n";
 
