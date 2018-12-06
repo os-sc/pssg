@@ -1,3 +1,7 @@
 * Add metadata to source nimble files and make the parser include them in the
   rendered html document (e.g. last update date, release date, author?)
+* Headers and footers?
+* A way to hide the nav, maybe include JavaScript?
+* A way to skip the nav
+* Anchor links to titles
 
