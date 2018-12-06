@@ -1,0 +1,3 @@
+* Add metadata to source nimble files and make the parser include them in the
+  rendered html document (e.g. last update date, release date, author?)
+
