@@ -4,4 +4,11 @@
 * A way to hide the nav, maybe include JavaScript?
 * A way to skip the nav
 * Anchor links to titles
+    -> Can this be easily added to <a>-tags?
+    -> Can this be easily added to an extra element via a macro?
+    -> Would it require changes in the Text::Nimble-Parser?
+* Error handling
+    -> Do additional error handling or let Text::Nimble decide?
+* Handle images
+    -> Macro to insert them as base64 + vim script to edit base64 in gimp?
 
