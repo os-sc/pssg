@@ -1,0 +1,15 @@
+body {
+    color: #F8F8F2;
+    background: #272822;
+    font-family: 'Hack', 'Ubuntu Mono', 'Consolas', 'Courier', monospace;
+    padding-left: 0.5em;
+}
+
+a      { color: #A6E22E; }
+code   { color: #AE81FF; }
+nav li { color: #C0C0C0; }
+nav p  { margin: 0; }
+li     { list-style-type: square; }
+
+h1, h2, h3, h4, h5, h6 { color: #FD971F; }
+
