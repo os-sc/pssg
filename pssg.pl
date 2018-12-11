@@ -59,6 +59,7 @@ END
     }
     my $ast = Text::Nimble::parse($macros . $text);
     my ($html, $meta, $errors) = Text::Nimble::render(html => $ast);
+
     if ($errors) {
         print "[RND ] Errors: '$errors'\n";
     }
@@ -75,7 +76,7 @@ END
 sub build_nav_link {
     my $file = shift(@_);
     my $root = shift(@_);
-    print "[NAV ] File $file\n";
+    print "[NAV ] File '$file'\n";
     my $title = build_title($file);
     $file =~ s/$root//;
     $file =~ s/\.$nimble_file_ext$/.html/;
@@ -85,7 +86,7 @@ sub build_nav_link {
 sub build_nav_dir {
     my $parent = shift(@_);
     my $root   = shift(@_);
-    print "[NAV ] Dir '$parent'\n";
+    print "[NAV ] Dir  '$parent'\n";
 
     my $nav = "";
     my $title  = build_title($parent);
@@ -119,7 +120,14 @@ sub build_nav {
     my $root = shift(@_);
     print "[NAV ] Building Navigation from root '$root'\n";
     my $elements = build_nav_dir($root, $root);
-    return "<nav><ul>$elements</ul></nav>\n";
+    return <<"END";
+<section>
+    <h1>Navigation</h1>
+    <nav>
+        <ul>$elements</ul>
+    </nav>
+</section>
+END
 }
 
 sub build_title {
@@ -193,12 +201,12 @@ if ($options{c}) {
     File::Path->remove_tree($outdir);
 }
 
-my @infiles = File::Find::Rule->file()
-                              ->name('*.$nimble_file_ext')
-                              ->in($indir);
-
 # Build nav
 my $nav = build_nav($indir);
+
+my @infiles = File::Find::Rule->file()
+                              ->name("*.$nimble_file_ext")
+                              ->in($indir);
 
 # Build pages
 foreach my $in (@infiles) {
