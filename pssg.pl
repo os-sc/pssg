@@ -48,7 +48,7 @@ END
 </html>
 END
 
-    print "[WRT ] Rendering file '$infile'...\n";
+    print "[REND] Rendering file '$infile'...\n";
     open(my $fh, "<", $infile)
         or die "[ERR ] Can't open '$infile': $!";
 
@@ -64,7 +64,7 @@ END
         print "[RND ] Errors: '$errors'\n";
     }
 
-    print "[READ] Writing output to '$outfile'...\n";
+    print "[REND] Writing output to '$outfile'...\n";
     open(my $out, ">", $outfile)
         or die "[ERR ] Can't open '$outfile': $!";
 
@@ -197,7 +197,7 @@ if ($options{s}) {
 }
 
 if ($options{c}) {
-    print "[REM ] Cleaning directory '$outdir'...\n";
+    print "[INFO] Cleaning directory '$outdir'...\n";
     File::Path->remove_tree($outdir);
 }
 
