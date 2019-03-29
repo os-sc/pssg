@@ -19,10 +19,11 @@ sub print_help {
     print "version: $version\n";
     print "options:\n\n";
     print "\t-c\tclean output directory\n";
-    print "\t-h\thelp\n";
     print "\t-f\tinput directory\n";
+    print "\t-h\thelp\n";
     print "\t-m\tmacro file\n";
     print "\t-o\toutput directory\n";
+    print "\t-p\tprefix for all navigation links\n";
     print "\t-s\tstyle sheet file\n";
 }
 
@@ -74,17 +75,19 @@ END
 }
 
 sub build_nav_link {
-    my $file = shift(@_);
-    my $root = shift(@_);
+    my $file   = shift(@_);
+    my $prefix = shift(@_);
+    my $root   = shift(@_);
     print "[NAV ] File '$file'\n";
     my $title = build_title($file);
-    $file =~ s/$root//;
+    $file =~ s/$root/$prefix/;
     $file =~ s/\.$nimble_file_ext$/.html/;
     return "<li><a href=\"$file\">$title</a></li>\n";
 }
 
 sub build_nav_dir {
     my $parent = shift(@_);
+    my $prefix = shift(@_);
     my $root   = shift(@_);
     print "[NAV ] Dir  '$parent'\n";
 
@@ -103,10 +106,10 @@ sub build_nav_dir {
         }
         if (-f $file) {
             next unless $file =~ /\.$nimble_file_ext$/;
-            $nav .= build_nav_link($file, $root);
+            $nav .= build_nav_link($file, $prefix, $root);
         }
         if (-d $file) {
-            $nav .= build_nav_dir($file, $root);
+            $nav .= build_nav_dir($file, $prefix, $root);
         }
     }
     if ($nav eq "") {
@@ -118,8 +121,9 @@ sub build_nav_dir {
 
 sub build_nav {
     my $root = shift(@_);
+    my $prefix = shift(@_);
     print "[NAV ] Building Navigation from root '$root'\n";
-    my $elements = build_nav_dir($root, $root);
+    my $elements = build_nav_dir($root, $prefix, $root);
     return <<"END";
 <section>
     <h1>Navigation</h1>
@@ -152,7 +156,7 @@ print "[INFO] Starting pssg version $version\n";
 
 # Parse command line arguments
 my $reqargs = "f:o:";
-my $optargs = "chm:s:";
+my $optargs = "chm:s:p:";
 my %options = ();
 getopts("$reqargs$optargs", \%options);
 
@@ -200,9 +204,15 @@ if ($options{c}) {
     print "[INFO] Cleaning directory '$outdir'...\n";
     File::Path->remove_tree($outdir);
 }
+my $prefix = '';
+if ($options{p}) {
+    $prefix = $options{p};
+    # Remove trailing slash if present
+    $prefix =~ s/\/$//;
+}
 
 # Build nav
-my $nav = build_nav($indir);
+my $nav = build_nav($indir, $prefix);
 
 my @infiles = File::Find::Rule->file()
                               ->name("*.$nimble_file_ext")
