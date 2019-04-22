@@ -62,7 +62,13 @@ END
     my ($html, $meta, $errors) = Text::Nimble::render(html => $ast);
 
     if ($errors) {
-        print "[RND ] Errors: '$errors'\n";
+        foreach my $e (@$errors) {
+            foreach my $messages ($e->{'errors'}) {
+                foreach my $m (@$messages) {
+                    print "[REND] Error $e->{'context'}: $m\n";
+                }
+            }
+        }
     }
 
     print "[REND] Writing output to '$outfile'...\n";
