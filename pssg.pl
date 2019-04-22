@@ -63,9 +63,9 @@ END
 
     if ($errors) {
         foreach my $e (@$errors) {
-            foreach my $messages ($e->{'errors'}) {
-                foreach my $m (@$messages) {
-                    print "[REND] Error $e->{'context'}: $m\n";
+            foreach my $sub ($e->{'errors'}) {
+                foreach my $msg (@$sub) {
+                    print "[REND] Error $e->{'context'}: $msg\n";
                 }
             }
         }
